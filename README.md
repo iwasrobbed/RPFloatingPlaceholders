@@ -11,4 +11,4 @@ http://dribbble.com/shots/1254439--GIF-Mobile-Form-Interaction?list=users
 
 ---
 
-UITextField equivalent: [https://github.com/jverdi/JVFloatLabeledTextFieldn](https://github.com/jverdi/JVFloatLabeledTextField) 
+UITextField equivalent: [https://github.com/jverdi/JVFloatLabeledTextField](https://github.com/jverdi/JVFloatLabeledTextField) 
