@@ -23,4 +23,4 @@ ARC & iOS 7+
 Please feel free to fork and create a pull request for bug fixes or improvements.
 
 ### Credit:
-Credit for the design concept goes to Matt D. Smith ([@mds](http://dribbble.com/shots/1254439--GIF-Mobile-Form-Interaction)).
+[Credit for the design concept goes to Matt D. Smith](http://dribbble.com/shots/1254439--GIF-Mobile-Form-Interaction).
