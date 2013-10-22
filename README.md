@@ -6,11 +6,12 @@ Please see the included example app for sample usage.
 
 ### Options:
 
-
 **Animate upward (default)**
+
 ![Upwards animation](http://i.imgur.com/Sze6OFN.gif)
 
 **Animate downward**
+
 ![Downwards animation](http://i.imgur.com/iFkcpeJ.gif)
 
 ### Supports: 
