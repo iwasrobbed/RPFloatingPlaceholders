@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D430EE631816CE490059015E /* RPFloatingPlaceholderTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = D430EE601816CE490059015E /* RPFloatingPlaceholderTextField.m */; };
+		D430EE641816CE490059015E /* RPFloatingPlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = D430EE621816CE490059015E /* RPFloatingPlaceholderTextView.m */; };
 		D4F239B11813869E00DBABA1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4F239B01813869E00DBABA1 /* Foundation.framework */; };
 		D4F239B31813869E00DBABA1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4F239B21813869E00DBABA1 /* CoreGraphics.framework */; };
 		D4F239B51813869E00DBABA1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4F239B41813869E00DBABA1 /* UIKit.framework */; };
@@ -19,7 +21,6 @@
 		D4F239D31813869E00DBABA1 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4F239D21813869E00DBABA1 /* XCTest.framework */; };
 		D4F239D41813869E00DBABA1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4F239B01813869E00DBABA1 /* Foundation.framework */; };
 		D4F239D51813869E00DBABA1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4F239B41813869E00DBABA1 /* UIKit.framework */; };
-		D4F239EB181387DD00DBABA1 /* RPFloatLabeledTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = D4F239EA181387DD00DBABA1 /* RPFloatLabeledTextView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +34,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D430EE5F1816CE490059015E /* RPFloatingPlaceholderTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPFloatingPlaceholderTextField.h; sourceTree = "<group>"; };
+		D430EE601816CE490059015E /* RPFloatingPlaceholderTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPFloatingPlaceholderTextField.m; sourceTree = "<group>"; };
+		D430EE611816CE490059015E /* RPFloatingPlaceholderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPFloatingPlaceholderTextView.h; sourceTree = "<group>"; };
+		D430EE621816CE490059015E /* RPFloatingPlaceholderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPFloatingPlaceholderTextView.m; sourceTree = "<group>"; };
+		D430EE651816EB3F0059015E /* RPFloatingPlaceholderConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPFloatingPlaceholderConstants.h; sourceTree = "<group>"; };
 		D4F239AD1813869E00DBABA1 /* FloatLabeledTextViewExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FloatLabeledTextViewExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4F239B01813869E00DBABA1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D4F239B21813869E00DBABA1 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -49,8 +55,6 @@
 		D4F239CB1813869E00DBABA1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		D4F239D11813869E00DBABA1 /* FloatLabeledTextViewExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FloatLabeledTextViewExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4F239D21813869E00DBABA1 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		D4F239E9181387DD00DBABA1 /* RPFloatLabeledTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RPFloatLabeledTextView.h; path = ../../RPFloatLabeledTextView/RPFloatLabeledTextView.h; sourceTree = "<group>"; };
-		D4F239EA181387DD00DBABA1 /* RPFloatLabeledTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RPFloatLabeledTextView.m; path = ../../RPFloatLabeledTextView/RPFloatLabeledTextView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +81,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D430EE5E1816CE490059015E /* RPFloatingPlaceholders */ = {
+			isa = PBXGroup;
+			children = (
+				D430EE651816EB3F0059015E /* RPFloatingPlaceholderConstants.h */,
+				D430EE5F1816CE490059015E /* RPFloatingPlaceholderTextField.h */,
+				D430EE601816CE490059015E /* RPFloatingPlaceholderTextField.m */,
+				D430EE611816CE490059015E /* RPFloatingPlaceholderTextView.h */,
+				D430EE621816CE490059015E /* RPFloatingPlaceholderTextView.m */,
+			);
+			name = RPFloatingPlaceholders;
+			path = ../../RPFloatingPlaceholders;
+			sourceTree = "<group>";
+		};
 		D4F239A41813869E00DBABA1 = {
 			isa = PBXGroup;
 			children = (
@@ -109,7 +126,7 @@
 		D4F239B61813869E00DBABA1 /* FloatLabeledTextViewExample */ = {
 			isa = PBXGroup;
 			children = (
-				D4F239E8181387AA00DBABA1 /* RPFloatLabeledTextView */,
+				D430EE5E1816CE490059015E /* RPFloatingPlaceholders */,
 				D4F239BF1813869E00DBABA1 /* AppDelegate.h */,
 				D4F239C01813869E00DBABA1 /* AppDelegate.m */,
 				D4F239C21813869E00DBABA1 /* Main_iPhone.storyboard */,
@@ -130,15 +147,6 @@
 				D4F239BE1813869E00DBABA1 /* FloatLabeledTextViewExample-Prefix.pch */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		D4F239E8181387AA00DBABA1 /* RPFloatLabeledTextView */ = {
-			isa = PBXGroup;
-			children = (
-				D4F239E9181387DD00DBABA1 /* RPFloatLabeledTextView.h */,
-				D4F239EA181387DD00DBABA1 /* RPFloatLabeledTextView.m */,
-			);
-			name = RPFloatLabeledTextView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -237,9 +245,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4F239EB181387DD00DBABA1 /* RPFloatLabeledTextView.m in Sources */,
+				D430EE631816CE490059015E /* RPFloatingPlaceholderTextField.m in Sources */,
 				D4F239CA1813869E00DBABA1 /* ViewController.m in Sources */,
 				D4F239C11813869E00DBABA1 /* AppDelegate.m in Sources */,
+				D430EE641816CE490059015E /* RPFloatingPlaceholderTextView.m in Sources */,
 				D4F239BD1813869E00DBABA1 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

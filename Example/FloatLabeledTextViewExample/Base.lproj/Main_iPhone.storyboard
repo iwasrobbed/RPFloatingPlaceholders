@@ -4,7 +4,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
     </dependencies>
     <scenes>
-        <!--View Controller - Floating Label-->
+        <!--View Controller - Floating Placeholders-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
                 <viewController id="vXZ-lx-hvc" customClass="ViewController" sceneMemberID="viewController">
@@ -12,31 +12,27 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="I love lamp" id="UjL-le-6Tw" customClass="RPFloatLabeledTextView">
-                                <rect key="frame" x="20" y="20" width="273" height="95"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="I love lamp.  This is pre-existing text." id="UjL-le-6Tw" customClass="RPFloatingPlaceholderTextView">
+                                <rect key="frame" x="20" y="76" width="273" height="95"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Tell me about yourself"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="This is a multi-line text view"/>
                                 </userDefinedRuntimeAttributes>
                             </textView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="Fbi-Xr-Ba1" customClass="RPFloatLabeledTextView">
-                                <rect key="frame" x="20" y="123" width="273" height="95"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="This is a single-line text field" minimumFontSize="14" id="gKu-vY-XIw" customClass="RPFloatingPlaceholderTextField">
+                                <rect key="frame" x="20" y="20" width="273" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Tell me a story"/>
-                                </userDefinedRuntimeAttributes>
-                            </textView>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <navigationItem key="navigationItem" title="Floating Label" id="Xam-rj-jdK">
+                    <navigationItem key="navigationItem" title="Floating Placeholders" id="Xam-rj-jdK">
                         <barButtonItem key="rightBarButtonItem" title="Dismiss" id="iUo-Zp-IIx">
                             <connections>
                                 <action selector="dismissKeyboard:" destination="vXZ-lx-hvc" id="icZ-s0-hTE"/>

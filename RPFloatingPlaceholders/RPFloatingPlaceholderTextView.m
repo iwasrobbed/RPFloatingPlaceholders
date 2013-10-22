@@ -1,6 +1,6 @@
 //
-//  RPFloatLabeledTextView.m
-//  RPFloatLabeledTextView
+//  RPFloatingPlaceholderTextView.m
+//  RPFloatingPlaceholders
 //
 //  Created by Rob Phillips on 10/19/13.
 //  Copyright (c) 2013 Rob Phillips. All rights reserved.
@@ -8,9 +8,9 @@
 //  See LICENSE for full license agreement.
 //
 
-#import "RPFloatLabeledTextView.h"
+#import "RPFloatingPlaceholderTextView.h"
 
-@interface RPFloatLabeledTextView ()
+@interface RPFloatingPlaceholderTextView ()
 
 /**
  Used to draw the placeholder string if necessary.
@@ -18,19 +18,16 @@
 @property (nonatomic, assign) BOOL shouldDrawPlaceholder;
 
 /**
- Used to know if the text view already exists in the superview.
- */
-@property (nonatomic, assign) BOOL existsInSuperview;
-
-/**
  Frames used to animate the floating label and text view into place.
  */
 @property (nonatomic, assign) CGRect originalTextViewFrame;
 @property (nonatomic, assign) CGRect offsetTextViewFrame;
+@property (nonatomic, assign) CGRect originalFloatingLabelFrame;
+@property (nonatomic, assign) CGRect offsetFloatingLabelFrame;
 
 @end
 
-@implementation RPFloatLabeledTextView
+@implementation RPFloatingPlaceholderTextView
 
 #pragma mark - Programmatic Initializer
 
@@ -67,6 +64,11 @@
     // Example: http://i.imgur.com/Oq1uFt0.png
     //
     //NSLog(@"Placeholder was set in IB to: %@", self.placeholder);
+    
+    // Ensures that the placeholder & text are set through our custom setters
+    // when loaded from a nib/storyboard.
+    self.placeholder = self.placeholder;
+    self.text = self.text;
 }
 
 #pragma mark - Unsupported Initializers
@@ -122,13 +124,16 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textViewTextDidChange:)
                                                  name:UITextViewTextDidChangeNotification object:self];
     
+    // Set the default animation direction
+    self.animationDirection = RPFloatingPlaceholderAnimateUpward;
+    
     // Setup default colors for the floating label states
     self.floatingLabelActiveTextColor = self.tintColor;
     self.floatingLabelInactiveTextColor = [UIColor grayColor];
     
     // Create the floating label instance and add it to the text view
     _floatingLabel = [[UILabel alloc] init];
-    _floatingLabel.font = [UIFont boldSystemFontOfSize:11.0f];
+    _floatingLabel.font = [UIFont boldSystemFontOfSize:11.f];
     _floatingLabel.textColor = self.floatingLabelActiveTextColor;
     _floatingLabel.backgroundColor = [UIColor clearColor];
     _floatingLabel.alpha = 0.f;
@@ -136,6 +141,9 @@
     // Change content inset to decrease margin between floating label and
     // text view text
     self.contentInset = UIEdgeInsetsMake(-10.f, 0.f, 0.f, 0.f);
+    
+    // Fixes a vertical alignment issue when setting text at runtime
+    self.textContainerInset = UIEdgeInsetsMake(10.f, 0.f, 0.f, 0.f);
     
     // Cache the original text view frame
     _originalTextViewFrame = self.frame;
@@ -161,11 +169,10 @@
     [super drawRect:aRect];
     
     // Check if we should draw the placeholder string.
-    // According to the UITextField docs, placeholders are drawn using
-    // a 70% gray color so we will do the same here.
+    // Use RGB values found via Photoshop for placeholder color #c7c7cd.
     if (_shouldDrawPlaceholder) {
-        UIColor *placeholderGray = [UIColor colorWithWhite:0.7f alpha:1.f];
-        [_placeholder drawInRect:CGRectMake(5.0f, 8.0f, self.frame.size.width - 16.0f, self.frame.size.height - 16.0f)
+        UIColor *placeholderGray = [UIColor colorWithRed:199/255.f green:199/255.f blue:205/255.f alpha:1.f];
+        [_placeholder drawInRect:CGRectMake(5.f, 10.f, self.frame.size.width - 10.f, self.frame.size.height - 20.f)
                   withAttributes:@{NSFontAttributeName : self.font,
                                    NSForegroundColorAttributeName : placeholderGray}];
     }
@@ -175,9 +182,8 @@
 {
     // Add it to the superview so that the floating label does not
     // scroll with the text view contents
-    if (!_existsInSuperview) {
+    if (!_floatingLabel.superview) {
         [self.superview addSubview:_floatingLabel];
-        _existsInSuperview = YES;
     }
     
     // Flags the view to redraw
@@ -186,13 +192,21 @@
     if (isAnimated) {
         __weak typeof(self) weakSelf = self;
         UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseOut;
-        [UIView animateWithDuration:0.2f delay:0.0f options:options animations:^{
-            _floatingLabel.alpha = 1.0f;
-            weakSelf.frame = _offsetTextViewFrame;
+        [UIView animateWithDuration:0.2f delay:0.f options:options animations:^{
+            _floatingLabel.alpha = 1.f;
+            if (weakSelf.animationDirection == RPFloatingPlaceholderAnimateDownward) {
+                weakSelf.frame = _offsetTextViewFrame;
+            } else {
+                _floatingLabel.frame = _offsetFloatingLabelFrame;
+            }
         } completion:nil];
     } else {
-        _floatingLabel.alpha = 1.0f;
-        self.frame = _offsetTextViewFrame;
+        _floatingLabel.alpha = 1.f;
+        if (self.animationDirection == RPFloatingPlaceholderAnimateDownward) {
+            self.frame = _offsetTextViewFrame;
+        } else {
+            _floatingLabel.frame = _offsetFloatingLabelFrame;
+        }
     }
 }
 
@@ -200,9 +214,13 @@
 {
     __weak typeof(self) weakSelf = self;
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseIn;
-    [UIView animateWithDuration:0.2f delay:0.0f options:options animations:^{
-        _floatingLabel.alpha = 0.0f;
-        weakSelf.frame = _originalTextViewFrame;
+    [UIView animateWithDuration:0.2f delay:0.f options:options animations:^{
+        _floatingLabel.alpha = 0.f;
+        if (weakSelf.animationDirection == RPFloatingPlaceholderAnimateDownward) {
+            weakSelf.frame = _originalTextViewFrame;
+        } else {
+            _floatingLabel.frame = _originalFloatingLabelFrame;
+        }
     } completion:^(BOOL finished) {
         // Flags the view to redraw
         [weakSelf setNeedsDisplay];
@@ -223,11 +241,15 @@
 {
     [_floatingLabel sizeToFit];
     
-    CGRect originalFloatingLabelFrame = CGRectMake(_originalTextViewFrame.origin.x + 5.f, _originalTextViewFrame.origin.y,
-                                                   _originalTextViewFrame.size.width - 16.0f, _floatingLabel.frame.size.height);
-    _floatingLabel.frame = originalFloatingLabelFrame;
+    CGFloat offset = _floatingLabel.font.lineHeight;
     
-    CGFloat offset = (_floatingLabel.frame.size.height / 3.f) + 10.f;
+    _originalFloatingLabelFrame = CGRectMake(_originalTextViewFrame.origin.x + 5.f, _originalTextViewFrame.origin.y,
+                                                   _originalTextViewFrame.size.width - 10.f, _floatingLabel.frame.size.height);
+    _floatingLabel.frame = _originalFloatingLabelFrame;
+    
+    _offsetFloatingLabelFrame = CGRectMake(_originalFloatingLabelFrame.origin.x, _originalFloatingLabelFrame.origin.y - offset,
+                                           _originalFloatingLabelFrame.size.width, _originalFloatingLabelFrame.size.height);
+    
     _offsetTextViewFrame = CGRectMake(_originalTextViewFrame.origin.x, _originalTextViewFrame.origin.y + offset,
                                       _originalTextViewFrame.size.width, _originalTextViewFrame.size.height - offset);
 }
