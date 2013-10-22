@@ -129,7 +129,7 @@
     
     // Setup default colors for the floating label states
     self.floatingLabelActiveTextColor = self.tintColor;
-    self.floatingLabelInactiveTextColor = [UIColor grayColor];
+    self.floatingLabelInactiveTextColor = [UIColor colorWithWhite:0.7f alpha:1.f];;
     
     // Create the floating label instance and add it to the text view
     _floatingLabel = [[UILabel alloc] init];
@@ -254,16 +254,30 @@
                                       _originalTextViewFrame.size.width, _originalTextViewFrame.size.height - offset);
 }
 
+- (void)animateFloatingLabelColorChangeWithAnimationBlock:(void (^)(void))animationBlock
+{
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionTransitionCrossDissolve;
+    [UIView transitionWithView:_floatingLabel duration:0.25 options:options animations:^{
+        animationBlock();
+    } completion:nil];
+}
+
 #pragma mark - Text View Observers
 
 - (void)textViewDidBeginEditing:(NSNotification *)notification
 {
-    _floatingLabel.textColor = self.floatingLabelActiveTextColor;
+    __weak typeof(self) weakSelf = self;
+    [self animateFloatingLabelColorChangeWithAnimationBlock:^{
+        _floatingLabel.textColor = weakSelf.floatingLabelActiveTextColor;
+    }];
 }
 
 - (void)textViewDidEndEditing:(NSNotification *)notification
 {
-    _floatingLabel.textColor = self.floatingLabelInactiveTextColor;
+    __weak typeof(self) weakSelf = self;
+    [self animateFloatingLabelColorChangeWithAnimationBlock:^{
+        _floatingLabel.textColor = weakSelf.floatingLabelInactiveTextColor;
+    }];
 }
 
 - (void)textViewTextDidChange:(NSNotification *)notification

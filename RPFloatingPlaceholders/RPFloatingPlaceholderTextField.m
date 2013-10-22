@@ -132,7 +132,7 @@
     
     // Setup default colors for the floating label states
     self.floatingLabelActiveTextColor = self.tintColor;
-    self.floatingLabelInactiveTextColor = [UIColor grayColor];
+    self.floatingLabelInactiveTextColor = [UIColor colorWithWhite:0.7f alpha:1.f];
     
     // Create the floating label instance and add it to the view
     _floatingLabel = [[UILabel alloc] init];
@@ -263,16 +263,30 @@
     return [super editingRectForBounds:UIEdgeInsetsInsetRect(bounds, UIEdgeInsetsMake(0.f, 5.f, 0.f, 5.f))];
 }
 
+- (void)animateFloatingLabelColorChangeWithAnimationBlock:(void (^)(void))animationBlock
+{
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionTransitionCrossDissolve;
+    [UIView transitionWithView:_floatingLabel duration:0.25 options:options animations:^{
+        animationBlock();
+    } completion:nil];
+}
+
 #pragma mark - Text Field Observers
 
 - (void)textFieldDidBeginEditing:(NSNotification *)notification
 {
-    _floatingLabel.textColor = self.floatingLabelActiveTextColor;
+    __weak typeof(self) weakSelf = self;
+    [self animateFloatingLabelColorChangeWithAnimationBlock:^{
+        _floatingLabel.textColor = weakSelf.floatingLabelActiveTextColor;
+    }];
 }
 
 - (void)textFieldDidEndEditing:(NSNotification *)notification
 {
-    _floatingLabel.textColor = self.floatingLabelInactiveTextColor;
+    __weak typeof(self) weakSelf = self;
+    [self animateFloatingLabelColorChangeWithAnimationBlock:^{
+        _floatingLabel.textColor = weakSelf.floatingLabelInactiveTextColor;
+    }];
 }
 
 - (void)textFieldTextDidChange:(NSNotification *)notification

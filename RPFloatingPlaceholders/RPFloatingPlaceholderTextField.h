@@ -36,7 +36,7 @@
  The color of the floating label displayed above the text field when it is in
  an inactive state (i.e. the associated text view is not first responder).
  
- @discussion Note: grayColor is used by default if this is nil.
+ @discussion Note: 70% gray is used by default if this is nil.
  */
 @property (nonatomic, strong) UIColor *floatingLabelInactiveTextColor;
 
