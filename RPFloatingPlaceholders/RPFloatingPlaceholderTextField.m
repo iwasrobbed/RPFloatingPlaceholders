@@ -165,12 +165,15 @@
 - (void)drawRect:(CGRect)aRect
 {
     [super drawRect:aRect];
+    float tempFontSize = self.font.pointSize; //Size of the font used
+    float tempSizeOfField = self.bounds.size.height; //Size of the TextField
+
     
     // Check if we should draw the placeholder string.
     // Use RGB values found via Photoshop for placeholder color #c7c7cd.
     if (_shouldDrawPlaceholder) {
         UIColor *placeholderGray = [UIColor colorWithRed:199/255.f green:199/255.f blue:205/255.f alpha:1.f];
-        [_cachedPlaceholder drawInRect:CGRectMake(5.f, 0.f, self.frame.size.width, self.frame.size.height)
+        [_cachedPlaceholder drawInRect:CGRectMake(5.f,ceil(tempSizeOfField/2) - floor(tempFontSize/2), self.frame.size.width, self.frame.size.height)
                         withAttributes:@{NSFontAttributeName : self.font,
                                          NSForegroundColorAttributeName : placeholderGray}];
     }
