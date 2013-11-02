@@ -128,7 +128,8 @@
     self.animationDirection = RPFloatingPlaceholderAnimateUpward;
     
     // Setup default colors for the floating label states
-    self.floatingLabelActiveTextColor = self.tintColor;
+    UIColor *defaultActiveColor = [self respondsToSelector:@selector(tintColor)] ? self.tintColor : [UIColor blueColor]; // iOS 6
+    self.floatingLabelActiveTextColor = defaultActiveColor;
     self.floatingLabelInactiveTextColor = [UIColor colorWithWhite:0.7f alpha:1.f];;
     
     // Create the floating label instance and add it to the text view
@@ -143,7 +144,9 @@
     self.contentInset = UIEdgeInsetsMake(-10.f, 0.f, 0.f, 0.f);
     
     // Fixes a vertical alignment issue when setting text at runtime
-    self.textContainerInset = UIEdgeInsetsMake(10.f, 0.f, 0.f, 0.f);
+    if([self respondsToSelector:@selector(textContainerInset)]) {
+        self.textContainerInset = UIEdgeInsetsMake(10.f, 0.f, 0.f, 0.f);
+    } // iOS 6
     
     // Cache the original text view frame
     _originalTextViewFrame = self.frame;
@@ -172,9 +175,20 @@
     // Use RGB values found via Photoshop for placeholder color #c7c7cd.
     if (_shouldDrawPlaceholder) {
         UIColor *placeholderGray = [UIColor colorWithRed:199/255.f green:199/255.f blue:205/255.f alpha:1.f];
-        [_placeholder drawInRect:CGRectMake(5.f, 10.f, self.frame.size.width - 10.f, self.frame.size.height - 20.f)
-                  withAttributes:@{NSFontAttributeName : self.font,
-                                   NSForegroundColorAttributeName : placeholderGray}];
+        CGRect placeholderFrame = CGRectMake(5.f, 10.f, self.frame.size.width - 10.f, self.frame.size.height - 20.f);
+        NSDictionary *placeholderAttributes = @{NSFontAttributeName : self.font,
+                                                NSForegroundColorAttributeName : placeholderGray};
+        
+        if([self respondsToSelector:@selector(tintColor)]) {
+            [_placeholder drawInRect:placeholderFrame
+                      withAttributes:placeholderAttributes];
+
+        }
+        else {
+            NSAttributedString *attributedPlaceholder = [[NSAttributedString alloc] initWithString:_placeholder attributes:placeholderAttributes];
+            [attributedPlaceholder drawInRect:placeholderFrame];
+        } // iOS 6
+
     }
 }
 
@@ -244,7 +258,7 @@
     CGFloat offset = _floatingLabel.font.lineHeight;
     
     _originalFloatingLabelFrame = CGRectMake(_originalTextViewFrame.origin.x + 5.f, _originalTextViewFrame.origin.y,
-                                                   _originalTextViewFrame.size.width - 10.f, _floatingLabel.frame.size.height);
+                                             _originalTextViewFrame.size.width - 10.f, _floatingLabel.frame.size.height);
     _floatingLabel.frame = _originalFloatingLabelFrame;
     
     _offsetFloatingLabelFrame = CGRectMake(_originalFloatingLabelFrame.origin.x, _originalFloatingLabelFrame.origin.y - offset,

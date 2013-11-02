@@ -131,7 +131,8 @@
     self.animationDirection = RPFloatingPlaceholderAnimateUpward;
     
     // Setup default colors for the floating label states
-    self.floatingLabelActiveTextColor = self.tintColor;
+    UIColor *defaultActiveColor = [self respondsToSelector:@selector(tintColor)] ? self.tintColor : [UIColor blueColor]; // iOS 6
+    self.floatingLabelActiveTextColor = defaultActiveColor;
     self.floatingLabelInactiveTextColor = [UIColor colorWithWhite:0.7f alpha:1.f];
     
     // Create the floating label instance and add it to the view
@@ -140,7 +141,7 @@
     _floatingLabel.textColor = self.floatingLabelActiveTextColor;
     _floatingLabel.backgroundColor = [UIColor clearColor];
     _floatingLabel.alpha = 1.f;
-
+    
     // Adjust the top margin of the text field and then cache the original
     // view frame
     _originalTextFieldFrame = UIEdgeInsetsInsetRect(self.frame, UIEdgeInsetsMake(5.f, 0.f, 2.f, 0.f));
@@ -170,9 +171,20 @@
     // Use RGB values found via Photoshop for placeholder color #c7c7cd.
     if (_shouldDrawPlaceholder) {
         UIColor *placeholderGray = [UIColor colorWithRed:199/255.f green:199/255.f blue:205/255.f alpha:1.f];
-        [_cachedPlaceholder drawInRect:CGRectMake(5.f, floorf((self.frame.size.height - self.font.lineHeight) / 2.f), self.frame.size.width, self.frame.size.height)
-                        withAttributes:@{NSFontAttributeName : self.font,
-                                         NSForegroundColorAttributeName : placeholderGray}];
+        CGRect placeholderFrame = CGRectMake(5.f, floorf((self.frame.size.height - self.font.lineHeight) / 2.f), self.frame.size.width, self.frame.size.height);
+        NSDictionary *placeholderAttributes = @{NSFontAttributeName : self.font,
+                                                NSForegroundColorAttributeName : placeholderGray};
+        
+        if([self respondsToSelector:@selector(tintColor)]) {
+            [_cachedPlaceholder drawInRect:placeholderFrame
+                      withAttributes:placeholderAttributes];
+            
+        }
+        else {
+            NSAttributedString *attributedPlaceholder = [[NSAttributedString alloc] initWithString:_cachedPlaceholder attributes:placeholderAttributes];
+            [attributedPlaceholder drawInRect:placeholderFrame];
+        } // iOS 6
+        
     }
 }
 
@@ -241,7 +253,7 @@
     CGFloat offset = _floatingLabel.font.lineHeight;
     
     _originalFloatingLabelFrame = CGRectMake(_originalTextFieldFrame.origin.x + 5.f, _originalTextFieldFrame.origin.y,
-                                                   _originalTextFieldFrame.size.width - 10.f, _floatingLabel.frame.size.height);
+                                             _originalTextFieldFrame.size.width - 10.f, _floatingLabel.frame.size.height);
     _floatingLabel.frame = _originalFloatingLabelFrame;
     
     _offsetFloatingLabelFrame = CGRectMake(_originalFloatingLabelFrame.origin.x, _originalFloatingLabelFrame.origin.y - offset,
