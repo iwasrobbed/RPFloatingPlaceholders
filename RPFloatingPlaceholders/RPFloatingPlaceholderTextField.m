@@ -175,13 +175,13 @@
         NSDictionary *placeholderAttributes = @{NSFontAttributeName : self.font,
                                                 NSForegroundColorAttributeName : placeholderGray};
         
-        if([self respondsToSelector:@selector(tintColor)]) {
+        if ([self respondsToSelector:@selector(tintColor)]) {
             [_cachedPlaceholder drawInRect:placeholderFrame
-                      withAttributes:placeholderAttributes];
+                            withAttributes:placeholderAttributes];
             
-        }
-        else {
-            NSAttributedString *attributedPlaceholder = [[NSAttributedString alloc] initWithString:_cachedPlaceholder attributes:placeholderAttributes];
+        } else {
+            NSAttributedString *attributedPlaceholder = [[NSAttributedString alloc] initWithString:_cachedPlaceholder
+                                                                                        attributes:placeholderAttributes];
             [attributedPlaceholder drawInRect:placeholderFrame];
         } // iOS 6
         

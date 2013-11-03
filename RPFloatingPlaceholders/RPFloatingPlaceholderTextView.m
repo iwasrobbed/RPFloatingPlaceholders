@@ -139,14 +139,18 @@
     _floatingLabel.backgroundColor = [UIColor clearColor];
     _floatingLabel.alpha = 0.f;
     
-    // Change content inset to decrease margin between floating label and
-    // text view text
-    self.contentInset = UIEdgeInsetsMake(-10.f, 0.f, 0.f, 0.f);
+    if ([self respondsToSelector:@selector(textContainerInset)]) {
+        // Change content inset to decrease margin between floating label and
+        // text view text
+        self.contentInset = UIEdgeInsetsMake(-10.f, 0.f, 0.f, 0.f);
     
-    // Fixes a vertical alignment issue when setting text at runtime
-    if([self respondsToSelector:@selector(textContainerInset)]) {
+        // Fixes a vertical alignment issue when setting text at runtime
         self.textContainerInset = UIEdgeInsetsMake(10.f, 0.f, 0.f, 0.f);
-    } // iOS 6
+    } else {
+        // Change content inset to decrease left margin and margin between
+        // floating text view text
+        self.contentInset = UIEdgeInsetsMake(-8.f, -3.f, 0.f, 0.f);
+    }  // iOS 6
     
     // Cache the original text view frame
     _originalTextViewFrame = self.frame;
@@ -175,17 +179,18 @@
     // Use RGB values found via Photoshop for placeholder color #c7c7cd.
     if (_shouldDrawPlaceholder) {
         UIColor *placeholderGray = [UIColor colorWithRed:199/255.f green:199/255.f blue:205/255.f alpha:1.f];
-        CGRect placeholderFrame = CGRectMake(5.f, 10.f, self.frame.size.width - 10.f, self.frame.size.height - 20.f);
         NSDictionary *placeholderAttributes = @{NSFontAttributeName : self.font,
                                                 NSForegroundColorAttributeName : placeholderGray};
         
-        if([self respondsToSelector:@selector(tintColor)]) {
+        if ([self respondsToSelector:@selector(tintColor)]) {
+            CGRect placeholderFrame = CGRectMake(5.f, 10.f, self.frame.size.width - 10.f, self.frame.size.height - 20.f);
             [_placeholder drawInRect:placeholderFrame
                       withAttributes:placeholderAttributes];
 
-        }
-        else {
-            NSAttributedString *attributedPlaceholder = [[NSAttributedString alloc] initWithString:_placeholder attributes:placeholderAttributes];
+        } else {
+            CGRect placeholderFrame = CGRectMake(8.f, 8.f, self.frame.size.width - 10.f, self.frame.size.height - 20.f);
+            NSAttributedString *attributedPlaceholder = [[NSAttributedString alloc] initWithString:_placeholder
+                                                                                        attributes:placeholderAttributes];
             [attributedPlaceholder drawInRect:placeholderFrame];
         } // iOS 6
 
