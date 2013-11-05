@@ -22,8 +22,8 @@ Please feel free to fork and create a pull request for bug fixes or improvements
 
 Thanks to the following people for their help: 
 
-[Giridhar](https://github.com/gizmoboy7)
-[Dima](https://github.com/DimaVartanian)
+* [Giridhar](https://github.com/gizmoboy7)
+* [Dima](https://github.com/DimaVartanian)
 
 ### Credit:
 [Credit for the design concept goes to Matt D. Smith](http://dribbble.com/shots/1254439--GIF-Mobile-Form-Interaction).
