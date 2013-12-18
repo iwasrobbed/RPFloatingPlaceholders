@@ -88,9 +88,7 @@
 - (void)setText:(NSString *)text
 {
     [super setText:text];
-    
-    // Check if we need to redraw for pre-existing text
-    [self checkForExistingText];
+    [self textFieldTextDidChange:nil];
 }
 
 - (void)setPlaceholder:(NSString *)aPlaceholder
