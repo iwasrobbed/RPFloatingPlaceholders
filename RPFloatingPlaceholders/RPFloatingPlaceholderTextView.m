@@ -41,6 +41,16 @@
     return self;
 }
 
+- (instancetype)initWithFrame:(CGRect)frame textContainer:(NSTextContainer *)textContainer
+{
+    self = [super initWithFrame:frame textContainer:textContainer];
+    if (self) {
+        // Setup the view defaults
+        [self setupViewDefaults];
+    }
+    return self;
+}
+
 #pragma mark - Nib/Storyboard Initializers
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
