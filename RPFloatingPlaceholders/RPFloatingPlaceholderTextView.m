@@ -41,6 +41,16 @@
     return self;
 }
 
+- (instancetype)initWithFrame:(CGRect)frame textContainer:(NSTextContainer *)textContainer
+{
+    self = [super initWithFrame:frame textContainer:textContainer];
+    if (self) {
+        // Setup the view defaults
+        [self setupViewDefaults];
+    }
+    return self;
+}
+
 #pragma mark - Nib/Storyboard Initializers
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
@@ -91,9 +101,7 @@
 - (void)setText:(NSString *)text
 {
     [super setText:text];
-    
-    // Check if we need to redraw for pre-existing text
-    [self checkForExistingText];
+    [self textViewTextDidChange:nil];
 }
 
 - (void)setPlaceholder:(NSString *)aPlaceholder
