@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "RPFloatingPlaceholders"
-  s.version      = "0.2.3"
+  s.version      = "0.2.4"
   s.summary      = "UITextField and UITextView subclasses with floating placeholder labels."
   s.homepage     = "https://github.com/iwasrobbed/RPFloatingPlaceholders"
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
