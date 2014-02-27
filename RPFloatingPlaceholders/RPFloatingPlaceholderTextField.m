@@ -30,6 +30,9 @@
 @property (nonatomic, assign) CGRect originalFloatingLabelFrame;
 @property (nonatomic, assign) CGRect offsetFloatingLabelFrame;
 
+// Make readwrite
+@property (nonatomic, strong, readwrite) UILabel *floatingLabel;
+
 @end
 
 @implementation RPFloatingPlaceholderTextField
@@ -93,15 +96,15 @@
 
 - (void)setPlaceholder:(NSString *)aPlaceholder
 {
-    if ([_cachedPlaceholder isEqualToString:aPlaceholder]) return;
+    if ([self.cachedPlaceholder isEqualToString:aPlaceholder]) return;
     
     // We draw the placeholder ourselves so we can control when it is shown
     // during the animations
     [super setPlaceholder:nil];
     
-    _cachedPlaceholder = aPlaceholder;
+    self.cachedPlaceholder = aPlaceholder;
     
-    _floatingLabel.text = _cachedPlaceholder;
+    self.floatingLabel.text = self.cachedPlaceholder;
     [self adjustFramesForNewPlaceholder];
     
     // Flags the view to redraw
@@ -134,16 +137,16 @@
     self.floatingLabelInactiveTextColor = [UIColor colorWithWhite:0.7f alpha:1.f];
     
     // Create the floating label instance and add it to the view
-    _floatingLabel = [[UILabel alloc] init];
-    _floatingLabel.font = [UIFont boldSystemFontOfSize:11.f];
-    _floatingLabel.textColor = self.floatingLabelActiveTextColor;
-    _floatingLabel.backgroundColor = [UIColor clearColor];
-    _floatingLabel.alpha = 1.f;
+    self.floatingLabel = [[UILabel alloc] init];
+    self.floatingLabel.font = [UIFont boldSystemFontOfSize:11.f];
+    self.floatingLabel.textColor = self.floatingLabelActiveTextColor;
+    self.floatingLabel.backgroundColor = [UIColor clearColor];
+    self.floatingLabel.alpha = 1.f;
     
     // Adjust the top margin of the text field and then cache the original
     // view frame
-    _originalTextFieldFrame = UIEdgeInsetsInsetRect(self.frame, UIEdgeInsetsMake(5.f, 0.f, 2.f, 0.f));
-    self.frame = _originalTextFieldFrame;
+    self.originalTextFieldFrame = UIEdgeInsetsInsetRect(self.frame, UIEdgeInsetsMake(5.f, 0.f, 2.f, 0.f));
+    self.frame = self.originalTextFieldFrame;
     
     // Set the background to a clear color
     self.backgroundColor = [UIColor clearColor];
@@ -167,18 +170,18 @@
     
     // Check if we should draw the placeholder string.
     // Use RGB values found via Photoshop for placeholder color #c7c7cd.
-    if (_shouldDrawPlaceholder) {
+    if (self.shouldDrawPlaceholder) {
         UIColor *placeholderGray = [UIColor colorWithRed:199/255.f green:199/255.f blue:205/255.f alpha:1.f];
         CGRect placeholderFrame = CGRectMake(5.f, floorf((self.frame.size.height - self.font.lineHeight) / 2.f), self.frame.size.width, self.frame.size.height);
         NSDictionary *placeholderAttributes = @{NSFontAttributeName : self.font,
                                                 NSForegroundColorAttributeName : placeholderGray};
         
         if ([self respondsToSelector:@selector(tintColor)]) {
-            [_cachedPlaceholder drawInRect:placeholderFrame
-                            withAttributes:placeholderAttributes];
+            [self.cachedPlaceholder drawInRect:placeholderFrame
+                                withAttributes:placeholderAttributes];
             
         } else {
-            NSAttributedString *attributedPlaceholder = [[NSAttributedString alloc] initWithString:_cachedPlaceholder
+            NSAttributedString *attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.cachedPlaceholder
                                                                                         attributes:placeholderAttributes];
             [attributedPlaceholder drawInRect:placeholderFrame];
         } // iOS 6
@@ -189,76 +192,74 @@
 - (void)showFloatingLabelWithAnimation:(BOOL)isAnimated
 {
     // Add it to the superview
-    if (!_floatingLabel.superview) {
-        [self.superview addSubview:_floatingLabel];
+    if (!self.floatingLabel.superview) {
+        [self.superview addSubview:self.floatingLabel];
     }
     
     // Flags the view to redraw
     [self setNeedsDisplay];
     
     if (isAnimated) {
-        __weak typeof(self) weakSelf = self;
         UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseOut;
         [UIView animateWithDuration:0.2f delay:0.f options:options animations:^{
-            _floatingLabel.alpha = 1.f;
-            if (weakSelf.animationDirection == RPFloatingPlaceholderAnimateDownward) {
-                weakSelf.frame = _offsetTextFieldFrame;
+            self.floatingLabel.alpha = 1.f;
+            if (self.animationDirection == RPFloatingPlaceholderAnimateDownward) {
+                self.frame = self.offsetTextFieldFrame;
             } else {
-                _floatingLabel.frame = _offsetFloatingLabelFrame;
+                self.floatingLabel.frame = self.offsetFloatingLabelFrame;
             }
         } completion:nil];
     } else {
-        _floatingLabel.alpha = 1.f;
+        self.floatingLabel.alpha = 1.f;
         if (self.animationDirection == RPFloatingPlaceholderAnimateDownward) {
-            self.frame = _offsetTextFieldFrame;
+            self.frame = self.offsetTextFieldFrame;
         } else {
-            _floatingLabel.frame = _offsetFloatingLabelFrame;
+            self.floatingLabel.frame = self.offsetFloatingLabelFrame;
         }
     }
 }
 
 - (void)hideFloatingLabel
 {
-    __weak typeof(self) weakSelf = self;
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseIn;
     [UIView animateWithDuration:0.2f delay:0.f options:options animations:^{
-        _floatingLabel.alpha = 0.f;
-        if (weakSelf.animationDirection == RPFloatingPlaceholderAnimateDownward) {
-            weakSelf.frame = _originalTextFieldFrame;
+        self.floatingLabel.alpha = 0.f;
+        if (self.animationDirection == RPFloatingPlaceholderAnimateDownward) {
+            self.frame = self.originalTextFieldFrame;
         } else {
-            _floatingLabel.frame = _originalFloatingLabelFrame;
+            self.floatingLabel.frame = self.originalFloatingLabelFrame;
         }
     } completion:^(BOOL finished) {
         // Flags the view to redraw
-        [weakSelf setNeedsDisplay];
+        [self setNeedsDisplay];
     }];
 }
 
 - (void)checkForExistingText
 {
     // Check if we need to redraw for pre-existing text
-    _shouldDrawPlaceholder = !self.hasText;
+    self.shouldDrawPlaceholder = !self.hasText;
     if (self.hasText) {
-        _floatingLabel.textColor = self.floatingLabelInactiveTextColor;
+        self.floatingLabel.textColor = self.floatingLabelInactiveTextColor;
         [self showFloatingLabelWithAnimation:NO];
     }
 }
 
 - (void)adjustFramesForNewPlaceholder
 {
-    [_floatingLabel sizeToFit];
+    [self.floatingLabel sizeToFit];
     
-    CGFloat offset = _floatingLabel.font.lineHeight;
+    CGFloat offset = self.floatingLabel.font.lineHeight;
     
-    _originalFloatingLabelFrame = CGRectMake(_originalTextFieldFrame.origin.x + 5.f, _originalTextFieldFrame.origin.y,
-                                             _originalTextFieldFrame.size.width - 10.f, _floatingLabel.frame.size.height);
-    _floatingLabel.frame = _originalFloatingLabelFrame;
+    self.originalFloatingLabelFrame = CGRectMake(self.originalTextFieldFrame.origin.x + 5.f, self.originalTextFieldFrame.origin.y,
+                                                 self.originalTextFieldFrame.size.width - 10.f, self.floatingLabel.frame.size.height);
+    self.floatingLabel.frame = self.originalFloatingLabelFrame;
     
-    _offsetFloatingLabelFrame = CGRectMake(_originalFloatingLabelFrame.origin.x, _originalFloatingLabelFrame.origin.y - offset,
-                                           _originalFloatingLabelFrame.size.width, _originalFloatingLabelFrame.size.height);
+    self.offsetFloatingLabelFrame = CGRectMake(self.originalFloatingLabelFrame.origin.x, self.originalFloatingLabelFrame.origin.y - offset,
+                                               self.originalFloatingLabelFrame.size.width, self.originalFloatingLabelFrame.size.height);
     
-    _offsetTextFieldFrame = CGRectMake(_originalTextFieldFrame.origin.x, _originalTextFieldFrame.origin.y + offset,
-                                       _originalTextFieldFrame.size.width, _originalTextFieldFrame.size.height);
+    self.offsetTextFieldFrame = CGRectMake(self.originalTextFieldFrame.origin.x, self.originalTextFieldFrame.origin.y + offset,
+                                           self.originalTextFieldFrame.size.width, self.originalTextFieldFrame.size.height);
 }
 
 // Adds padding so these text fields align with RPFloatingPlaceholderTextView's
@@ -276,7 +277,7 @@
 - (void)animateFloatingLabelColorChangeWithAnimationBlock:(void (^)(void))animationBlock
 {
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionTransitionCrossDissolve;
-    [UIView transitionWithView:_floatingLabel duration:0.25 options:options animations:^{
+    [UIView transitionWithView:self.floatingLabel duration:0.25 options:options animations:^{
         animationBlock();
     } completion:nil];
 }
@@ -287,7 +288,8 @@
 {
     __weak typeof(self) weakSelf = self;
     [self animateFloatingLabelColorChangeWithAnimationBlock:^{
-        _floatingLabel.textColor = weakSelf.floatingLabelActiveTextColor;
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        _floatingLabel.textColor = strongSelf.floatingLabelActiveTextColor;
     }];
 }
 
@@ -295,18 +297,19 @@
 {
     __weak typeof(self) weakSelf = self;
     [self animateFloatingLabelColorChangeWithAnimationBlock:^{
-        _floatingLabel.textColor = weakSelf.floatingLabelInactiveTextColor;
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        self.floatingLabel.textColor = strongSelf.floatingLabelInactiveTextColor;
     }];
 }
 
 - (void)textFieldTextDidChange:(NSNotification *)notification
 {
-    BOOL _previousShouldDrawPlaceholderValue = _shouldDrawPlaceholder;
-    _shouldDrawPlaceholder = !self.hasText;
+    BOOL previousShouldDrawPlaceholderValue = self.shouldDrawPlaceholder;
+    self.shouldDrawPlaceholder = !self.hasText;
     
-    // Only redraw if _shouldDrawPlaceholder value was changed
-    if (_previousShouldDrawPlaceholderValue != _shouldDrawPlaceholder) {
-        if (_shouldDrawPlaceholder) {
+    // Only redraw if self.shouldDrawPlaceholder value was changed
+    if (previousShouldDrawPlaceholderValue != self.shouldDrawPlaceholder) {
+        if (self.shouldDrawPlaceholder) {
             [self hideFloatingLabel];
         } else {
             [self showFloatingLabelWithAnimation:YES];
