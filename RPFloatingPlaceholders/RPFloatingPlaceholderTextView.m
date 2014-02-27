@@ -78,6 +78,9 @@
     //
     //NSLog(@"Placeholder was set in IB to: %@", self.placeholder);
     
+    // This must be done in awakeFromNib since global tint color isn't set by the time initWithCoder: is called
+    [self setupDefaultColorStates];
+    
     // Ensures that the placeholder & text are set through our custom setters
     // when loaded from a nib/storyboard.
     self.placeholder = self.placeholder;
@@ -138,15 +141,9 @@
     // Set the default animation direction
     self.animationDirection = RPFloatingPlaceholderAnimateUpward;
     
-    // Setup default colors for the floating label states
-    UIColor *defaultActiveColor = [self respondsToSelector:@selector(tintColor)] ? self.tintColor : [UIColor blueColor]; // iOS 6
-    self.floatingLabelActiveTextColor = defaultActiveColor;
-    self.floatingLabelInactiveTextColor = [UIColor colorWithWhite:0.7f alpha:1.f];;
-    
     // Create the floating label instance and add it to the text view
     self.floatingLabel = [[UILabel alloc] init];
     self.floatingLabel.font = [UIFont boldSystemFontOfSize:11.f];
-    self.floatingLabel.textColor = self.floatingLabelActiveTextColor;
     self.floatingLabel.backgroundColor = [UIColor clearColor];
     self.floatingLabel.alpha = 0.f;
     
@@ -168,6 +165,21 @@
     
     // Set the background to a clear color
     self.backgroundColor = [UIColor clearColor];
+}
+
+- (void)setupDefaultColorStates {
+    // Setup default colors for the floating label states
+    UIColor *defaultActiveColor;
+    if ([self respondsToSelector:@selector(tintColor)]) {
+        defaultActiveColor = self.tintColor ?: [[[UIApplication sharedApplication] delegate] window].tintColor;
+    } else {
+        // iOS 6
+        defaultActiveColor = [UIColor blueColor];
+    }
+    self.floatingLabelActiveTextColor = defaultActiveColor;
+    self.floatingLabelInactiveTextColor = [UIColor colorWithWhite:0.7f alpha:1.f];
+    
+    self.floatingLabel.textColor = self.floatingLabelActiveTextColor;
 }
 
 #pragma mark - Drawing & Animations
