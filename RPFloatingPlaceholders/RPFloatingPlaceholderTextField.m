@@ -45,6 +45,7 @@
     if (self) {
         // Setup the view defaults
         [self setupViewDefaults];
+        [self setupDefaultColorStates];
     }
     return self;
 }
