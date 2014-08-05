@@ -222,11 +222,22 @@
     }
 }
 
+- (void)didMoveToSuperview
+{
+    if (self.floatingLabel.superview != self.superview) {
+        if (self.superview && self.hasText) {
+            [self.superview addSubview:self.floatingLabel];
+        } else {
+            [self.floatingLabel removeFromSuperview];
+        }
+    }
+}
+
 - (void)showFloatingLabelWithAnimation:(BOOL)isAnimated
 {
     // Add it to the superview so that the floating label does not
     // scroll with the text view contents
-    if (!self.floatingLabel.superview) {
+    if (self.floatingLabel.superview != self.superview) {
         [self.superview addSubview:self.floatingLabel];
     }
     
