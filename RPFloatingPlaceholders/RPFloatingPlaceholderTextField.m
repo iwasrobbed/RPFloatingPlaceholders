@@ -299,18 +299,18 @@
 
 - (void)textFieldDidBeginEditing:(NSNotification *)notification
 {
-    __weak typeof(self) weakSelf = self;
+    __weak __typeof(self) weakSelf = self;
     [self animateFloatingLabelColorChangeWithAnimationBlock:^{
-        __strong typeof(weakSelf) strongSelf = weakSelf;
+        __strong __typeof(weakSelf) strongSelf = weakSelf;
         _floatingLabel.textColor = strongSelf.floatingLabelActiveTextColor;
     }];
 }
 
 - (void)textFieldDidEndEditing:(NSNotification *)notification
 {
-    __weak typeof(self) weakSelf = self;
+    __weak __typeof(self) weakSelf = self;
     [self animateFloatingLabelColorChangeWithAnimationBlock:^{
-        __strong typeof(weakSelf) strongSelf = weakSelf;
+        __strong __typeof(weakSelf) strongSelf = weakSelf;
         self.floatingLabel.textColor = strongSelf.floatingLabelInactiveTextColor;
     }];
 }
