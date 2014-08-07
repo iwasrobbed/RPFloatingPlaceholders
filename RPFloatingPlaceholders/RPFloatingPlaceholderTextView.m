@@ -140,6 +140,9 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textViewTextDidChange:)
                                                  name:UITextViewTextDidChangeNotification object:self];
     
+    // Forces drawRect to be called when the bounds change
+    self.contentMode = UIViewContentModeRedraw;
+
     // Set the default animation direction
     self.animationDirection = RPFloatingPlaceholderAnimateUpward;
     
@@ -294,7 +297,7 @@
 {
     [self.floatingLabel sizeToFit];
     
-    CGFloat offset = self.floatingLabel.font.lineHeight;
+    CGFloat offset = ceil(self.floatingLabel.font.lineHeight);
     
     self.originalFloatingLabelFrame = CGRectMake(self.originalTextViewFrame.origin.x + 5.f, self.originalTextViewFrame.origin.y,
                                                  self.originalTextViewFrame.size.width - 10.f, self.floatingLabel.frame.size.height);
