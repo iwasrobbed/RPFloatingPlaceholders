@@ -132,6 +132,9 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldTextDidChange:)
                                                  name:UITextFieldTextDidChangeNotification object:self];
     
+    // Forces drawRect to be called when the bounds change
+    self.contentMode = UIViewContentModeRedraw;
+
     // Set the default animation direction
     self.animationDirection = RPFloatingPlaceholderAnimateUpward;
     
@@ -202,10 +205,21 @@
     }
 }
 
+- (void)didMoveToSuperview
+{
+    if (self.floatingLabel.superview != self.superview) {
+        if (self.superview && self.hasText) {
+            [self.superview addSubview:self.floatingLabel];
+        } else {
+            [self.floatingLabel removeFromSuperview];
+        }
+    }
+}
+
 - (void)showFloatingLabelWithAnimation:(BOOL)isAnimated
 {
     // Add it to the superview
-    if (!self.floatingLabel.superview) {
+    if (self.floatingLabel.superview != self.superview) {
         [self.superview addSubview:self.floatingLabel];
     }
     
@@ -262,7 +276,7 @@
 {
     [self.floatingLabel sizeToFit];
     
-    CGFloat offset = self.floatingLabel.font.lineHeight;
+    CGFloat offset = ceil(self.floatingLabel.font.lineHeight);
     
     self.originalFloatingLabelFrame = CGRectMake(self.originalTextFieldFrame.origin.x + 5.f, self.originalTextFieldFrame.origin.y,
                                                  self.originalTextFieldFrame.size.width - 10.f, self.floatingLabel.frame.size.height);
