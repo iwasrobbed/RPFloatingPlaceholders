@@ -1,5 +1,7 @@
 ## RPFloatingPlaceholders
 
+Support this project via Gratipay <img src="http://img.shields.io/gratipay/iwasrobbed.svg">
+
 UITextField and UITextView subclasses with placeholders that change into floating labels when the fields are populated with text.  
 
 Please see the included example app for sample usage.
