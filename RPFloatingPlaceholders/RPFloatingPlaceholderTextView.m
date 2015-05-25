@@ -181,8 +181,8 @@
         // iOS 6
         defaultActiveColor = [UIColor blueColor];
     }
-    self.floatingLabelActiveTextColor = defaultActiveColor;
-    self.floatingLabelInactiveTextColor = [UIColor colorWithWhite:0.7f alpha:1.f];
+    self.floatingLabelActiveTextColor = self.floatingLabelActiveTextColor ?: defaultActiveColor;
+    self.floatingLabelInactiveTextColor = self.floatingLabelInactiveTextColor ?: [UIColor colorWithWhite:0.7f alpha:1.f];
     
     self.floatingLabel.textColor = self.floatingLabelActiveTextColor;
 }
