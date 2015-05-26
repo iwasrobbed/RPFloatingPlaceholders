@@ -115,6 +115,13 @@
     [self setNeedsDisplay];
 }
 
+- (void)setFloatingLabelActiveTextColor:(UIColor *)floatingLabelActiveTextColor
+{
+    _floatingLabelActiveTextColor = floatingLabelActiveTextColor;
+    if (self.isEditing)
+        self.floatingLabel.textColor = floatingLabelActiveTextColor;
+}
+
 - (BOOL)hasText
 {
     return self.text.length != 0;
