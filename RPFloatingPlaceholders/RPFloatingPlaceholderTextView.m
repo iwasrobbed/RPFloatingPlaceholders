@@ -206,7 +206,7 @@
     // Check if we should draw the placeholder string.
     // Use RGB values found via Photoshop for placeholder color #c7c7cd.
     if (self.shouldDrawPlaceholder) {
-        UIColor *placeholderGray = [UIColor colorWithRed:199/255.f green:199/255.f blue:205/255.f alpha:1.f];
+        UIColor *placeholderGray = self.defaultPlaceholderColor ?: [UIColor colorWithRed:199/255.f green:199/255.f blue:205/255.f alpha:1.f];
         NSDictionary *placeholderAttributes = @{NSFontAttributeName : self.font,
                                                 NSForegroundColorAttributeName : placeholderGray};
         

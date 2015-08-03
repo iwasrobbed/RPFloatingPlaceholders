@@ -45,4 +45,11 @@
  */
 @property (nonatomic, strong) UIColor *floatingLabelInactiveTextColor;
 
+/**
+ The default color of the text field's placeholder text
+ 
+ @discussion Note: 70% gray is used by default if this is nil.
+ */
+@property (nonatomic, strong) UIColor *defaultPlaceholderColor;
+
 @end
