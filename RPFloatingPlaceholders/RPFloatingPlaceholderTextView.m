@@ -112,6 +112,12 @@
     [self textViewTextDidChange:nil];
 }
 
+- (void)setTextAlignment:(NSTextAlignment)textAlignment
+{
+    [super setTextAlignment: textAlignment];
+    self.floatingLabel.textAlignment = textAlignment;
+}
+
 - (void)setPlaceholder:(NSString *)aPlaceholder
 {
     if ([_placeholder isEqualToString:aPlaceholder]) return;
@@ -149,6 +155,7 @@
     // Create the floating label instance and add it to the text view
     self.floatingLabel = [[UILabel alloc] init];
     self.floatingLabel.font = [UIFont boldSystemFontOfSize:11.f];
+    self.floatingLabel.textAlignment = self.textAlignment;
     self.floatingLabel.backgroundColor = [UIColor clearColor];
     self.floatingLabel.alpha = 0.f;
     
@@ -207,8 +214,12 @@
     // Use RGB values found via Photoshop for placeholder color #c7c7cd.
     if (self.shouldDrawPlaceholder) {
         UIColor *placeholderGray = self.defaultPlaceholderColor ?: [UIColor colorWithRed:199/255.f green:199/255.f blue:205/255.f alpha:1.f];
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        [paragraphStyle setAlignment: self.textAlignment];
+        
         NSDictionary *placeholderAttributes = @{NSFontAttributeName : self.font,
-                                                NSForegroundColorAttributeName : placeholderGray};
+                                                NSForegroundColorAttributeName : placeholderGray,
+                                                NSParagraphStyleAttributeName : paragraphStyle};
         
         if ([self respondsToSelector:@selector(tintColor)]) {
             CGRect placeholderFrame = CGRectMake(5.f, 10.f, self.frame.size.width - 10.f, self.frame.size.height - 20.f);

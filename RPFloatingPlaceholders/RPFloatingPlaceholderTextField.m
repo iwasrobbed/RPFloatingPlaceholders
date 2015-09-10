@@ -98,6 +98,12 @@
     [self textFieldTextDidChange:nil];
 }
 
+- (void)setTextAlignment:(NSTextAlignment)textAlignment
+{
+    [super setTextAlignment: textAlignment];
+    self.floatingLabel.textAlignment = textAlignment;
+}
+
 - (void)setPlaceholder:(NSString *)aPlaceholder
 {
     if ([self.cachedPlaceholder isEqualToString:aPlaceholder]) return;
@@ -148,6 +154,7 @@
     // Create the floating label instance and add it to the view
     self.floatingLabel = [[UILabel alloc] init];
     self.floatingLabel.font = [UIFont boldSystemFontOfSize:11.f];
+    self.floatingLabel.textAlignment = self.textAlignment;
     self.floatingLabel.backgroundColor = [UIColor clearColor];
     self.floatingLabel.alpha = 1.f;
     
@@ -196,8 +203,12 @@
     if (self.shouldDrawPlaceholder) {
         UIColor *placeholderGray = self.defaultPlaceholderColor ?: [UIColor colorWithRed:199/255.f green:199/255.f blue:205/255.f alpha:1.f];
         CGRect placeholderFrame = CGRectMake(5.f, floorf((self.frame.size.height - self.font.lineHeight) / 2.f), self.frame.size.width, self.frame.size.height);
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        [paragraphStyle setAlignment: self.textAlignment];
+        
         NSDictionary *placeholderAttributes = @{NSFontAttributeName : self.font,
-                                                NSForegroundColorAttributeName : placeholderGray};
+                                                NSForegroundColorAttributeName : placeholderGray,
+                                                NSParagraphStyleAttributeName : paragraphStyle};
         
         if ([self respondsToSelector:@selector(tintColor)]) {
             [self.cachedPlaceholder drawInRect:placeholderFrame
