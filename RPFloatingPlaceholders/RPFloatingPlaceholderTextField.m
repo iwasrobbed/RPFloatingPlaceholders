@@ -202,7 +202,7 @@
     // Use RGB values found via Photoshop for placeholder color #c7c7cd.
     if (self.shouldDrawPlaceholder) {
         UIColor *placeholderGray = self.defaultPlaceholderColor ?: [UIColor colorWithRed:199/255.f green:199/255.f blue:205/255.f alpha:1.f];
-        //Inset the placeholder by the same 5px on both sides so that it works in RTL too
+        // Inset the placeholder by the same 5px on both sides so that it works in right-to-left languages too
         CGRect placeholderFrame = CGRectMake(5.f, floorf((self.frame.size.height - self.font.lineHeight) / 2.f), self.frame.size.width - 10, self.frame.size.height);
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
         [paragraphStyle setAlignment: self.textAlignment];

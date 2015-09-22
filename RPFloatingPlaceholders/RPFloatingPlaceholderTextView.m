@@ -222,6 +222,7 @@
                                                 NSParagraphStyleAttributeName : paragraphStyle};
         
         if ([self respondsToSelector:@selector(tintColor)]) {
+            // Inset the placeholder by the same 5px on both sides so that it works in right-to-left languages too
             CGRect placeholderFrame = CGRectMake(5.f, 10.f, self.frame.size.width - 10.f, self.frame.size.height - 20.f);
             [self.placeholder drawInRect:placeholderFrame
                       withAttributes:placeholderAttributes];
