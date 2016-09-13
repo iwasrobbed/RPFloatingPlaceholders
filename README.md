@@ -1,3 +1,7 @@
+## Deprecated
+
+Please use [JVFloatLabeledTextField](https://github.com/jverdi/JVFloatLabeledTextField) instead or feel free to chime in on an issue if you'd like to take over the repo.
+
 ## RPFloatingPlaceholders
 
 UITextField and UITextView subclasses with placeholders that change into floating labels when the fields are populated with text.
